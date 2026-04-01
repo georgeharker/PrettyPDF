@@ -7,6 +7,7 @@
 \usepackage{fontspec}
 \usepackage{titlesec}
 \usepackage{graphicx} 
+\usepackage{adjustbox}
 
 %% Set page size with a wider right margin
 \geometry{a4paper, total={170mm,257mm}, left=20mm, top=20mm, bottom=20mm, right=50mm}
@@ -15,8 +16,26 @@
 \definecolor{light}{HTML}{E6E6FA}
 \definecolor{highlight}{HTML}{800080}
 \definecolor{dark}{HTML}{330033}
+\definecolor{imgbg}{HTML}{b9a9c2}
 
 \graphicspath{{../_extensions/georgeharker/PrettyPDF/} {./_extensions/georgeharker/PrettyPDF/} } % set the graphics path
+
+%% define logo
+
+%% Save the original \includegraphics before any redefinition
+\let\oldincludegraphics\includegraphics
+
+%% Logo: no background — use the raw saved command
+\newcommand{\logographics}[2][]{%
+    \oldincludegraphics[#1]{#2}%
+}
+
+%% give a tint to images background
+%% All other graphics: tinted background
+\renewcommand{\includegraphics}[2][]{%
+    \adjustbox{bgcolor=imgbg, cfbox=imgbg 4pt}{\oldincludegraphics[#1]{#2}}%
+}
+
 
 %% Let's add the border on the right hand side 
 \AddToShipoutPicture{% 
@@ -28,7 +47,7 @@
      % logo
     \AtPageLowerLeft{% start the bar at the bottom right of the page
         \put(\LenToUnit{\dimexpr\paperwidth-2.25cm},27.2cm){% move it to the top right
-            \color{light}\includegraphics[width=1.5cm]{logo.png}
+            \color{light}\logographics[width=1.5cm]{logo.png}
           }%
      }%
 }
@@ -81,3 +100,13 @@
     Scale=0.9
     ]
 %
+
+%% put speaker notes in boxes
+\usepackage[skins, breakable]{tcolorbox}
+\newenvironment{speakernotes}{%
+  \begin{tcolorbox}[colback=gray!10, colframe=gray!50, title=Speaker Notes, fonttitle=\bfseries\small, fontupper=\small]
+}{%
+  \end{tcolorbox}
+}
+
+

@@ -11,6 +11,8 @@ contributes:
        - "PrettyPDF.tex"
       include-before-body:
        - "pagestyle.tex"
+      filters:
+       - "notesbox.lua"
       toc: false
       code-block-bg: light
       linkcolor: highlight
